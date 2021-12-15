@@ -9,7 +9,8 @@ _Basic useful codes towards day-to-day automation_
 ### Resources
 * https://www.kaggle.com/datasets
 
-### Setting up the start-up folder for Jupyter (Courtesy - https://stackoverflow.com/questions/35254852/how-to-change-the-jupyter-start-up-folder)
+### Setting up the start-up folder for Jupyter 
+(Courtesy - https://stackoverflow.com/questions/35254852/how-to-change-the-jupyter-start-up-folder)
   1. Open cmd (or Anaconda Prompt) and run jupyter notebook --generate-config
   2. This writes a file to C:\Users\username\.jupyter\jupyter_notebook_config.py
   3. Browse to the file location and open it in an Editor (Ex: Visual Studio Code editor)
