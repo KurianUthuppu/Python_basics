@@ -26,6 +26,23 @@ _Basic useful codes towards day-to-day automation_
 -> For this exercise, I have downloaded 'Student Alcohol Consumption' dataset
    Link: https://www.kaggle.com/uciml/student-alcohol-consumption
 
+### Setup the environment
+- Start Anaconda
+- Click jupyter notebook
+- Go to the requisite folder from the set default folder
+- Creater new jupyter notebook and give the desired name
+
+### Steps towards data analysis
+1. Import importanat libraries
+```
+import pandas as pd
+import os
+import glob
+```
+3. Read requisite files and storing to dataframe
+4. Under the data at a macro level
+5. 
+
 ### Reading/Writing files in a folder
 
  
