@@ -32,17 +32,41 @@ _Basic useful codes towards day-to-day automation_
 - Go to the requisite folder from the set default folder
 - Creater new jupyter notebook and give the desired name
 
+### Short-cut tricks in jupyter notebooks
+- Press letter 'A' for inserting new block above
+- Press letter 'B' for inserting new block below
+- Press shift+Enter to run the code in the particular block and insert another block below
+- Press alt+Enter to just run the code in the block selected
+- Select the block (without prompt inside the block, if prompt visible, press escape so that block is selected), enter # as per the header size requirement, type in the header and then run the block using shift/alt + Enter
+- Press d two times simultaneously to delete the block
+
 ### Steps towards data analysis
 1. Import importanat libraries
 ```
-import pandas as pd
-import os
-import glob
+import pandas as pd # Useful for data manipulation and analysis
+import os # Use operating system dependant functionality
+import glob # Helps find pathnames that matches specific patterns
 ```
-3. Read requisite files and storing to dataframe
-4. Under the data at a macro level
-5. 
+2. Read requisite files and storing to dataframe
+```
+# Setting the path to the requisite folder
+path = os.getcwd()
+csv_files = glob.glob(os.path.join(path+'.\\','student*.csv'))
 
-### Reading/Writing files in a folder
+# Declaring empty dataframe and appending data from all files matching the filename above
+stud_df = pd.concat((pd.read_csv(file) for file in csv_files), ignore_index=True)
+```
+3. A bird's eye-view on the dataset
+```
+stud_df.head() # Give visibility on the top 5 rows along with headers
+stud_df.describe() # Executes major statistical analysis
+```
+4. Data cleaning
+```
+stud_df.dtypes # lists out the data types in each column
+stud_df.columns = stud_df.columns.str.strip() # Removing white-space on the headers
+stud_df = stud_df.convert_dtypes() # To identify and convert each column to the right data type; check again using dtype forumula
+```
+
 
  
