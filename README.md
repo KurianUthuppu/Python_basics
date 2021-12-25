@@ -46,6 +46,8 @@ _Basic useful codes towards day-to-day automation_
 import pandas as pd # Useful for data manipulation and analysis
 import os # Use operating system dependant functionality
 import glob # Helps find pathnames that matches specific patterns
+import matplotlib.pyplot as plt # Comprehensive library for creating static, animated, and interactive visualizations in Python
+import numpy as np # Library to perform mathematical and logical operations on arrays
 ```
 2. Read requisite files and storing to dataframe
 ```
@@ -66,6 +68,29 @@ stud_df.describe() # Executes major statistical analysis
 stud_df.dtypes # lists out the data types in each column
 stud_df.columns = stud_df.columns.str.strip() # Removing white-space on the headers
 stud_df = stud_df.convert_dtypes() # To identify and convert each column to the right data type; check again using dtype forumula
+
+stud_df.drop(['reason','nursery'],axis='columns',inplace=True) # Dropping columns that aren't required
+# Inplace will modify the results in the dataframe itself; else you might have to assign the results to the dataframe
+```
+5. Data analysis
+```
+# Findout average age of Female and Male students separately
+age_mean = np.mean(stud_df['age'])
+f_age_mean = np.mean(stud_df[stud_df['sex']=='F'].age)
+m_age_mean = np.mean(stud_df[stud_df['sex']=='M'].age)
+print("Mean age:",round(age_mean,2),"\nMean age - Female:",round(f_age_mean,2),"\nMean age - Male:",round(m_age_mean,2))
+
+# Findout average alcohol consumption score of Female and Male students separately with 75% weightage to weekday consumption and 25% to weekend consumption
+alc_mean = np.mean(stud_df['Dalc']*0.75+stud_df['Walc']*0.25)
+f_alc_mean = np.mean(stud_df[stud_df['sex']=='F'].Dalc*0.75+stud_df[stud_df['sex']=='F'].Walc*0.25)
+m_alc_mean = np.mean(stud_df[stud_df['sex']=='M'].Dalc*0.75+stud_df[stud_df['sex']=='M'].Walc*0.25)
+print("Mean alcohol score:",round(alc_mean,2),"\nMean alcohol score - Female:",round(f_alc_mean,2),"\nMean alcohol score - Male:",round(m_alc_mean,2))
+```
+6. Visualizaiton
+```
+# Plotting simple histogram of the age
+plt.hist(stud_df.age)
+plt.show()
 ```
 
 
