@@ -87,10 +87,21 @@ m_alc_mean = np.mean(stud_df[stud_df['sex']=='M'].Dalc*0.75+stud_df[stud_df['sex
 print("Mean alcohol score:",round(alc_mean,2),"\nMean alcohol score - Female:",round(f_alc_mean,2),"\nMean alcohol score - Male:",round(m_alc_mean,2))
 ```
 6. Visualizaiton
+- Some of the useful tools in this are histogram and heatmap
+- Histogram help to understand the distribution of data while heatmap reveals the correlation between all variables in the dataset
+- Histogram analysis showed the tapering of age in the given dataset beyond 18 years of age and becoming negligible post 20
+- Heatmap revealed that there is good coorelation between the education of Father & Mother (0.62), workday vs weekend alcoholism (0.65) and between 1st, 2nd and final grades
 ```
 # Plotting simple histogram of the age
 plt.hist(stud_df.age)
 plt.show()
+
+# Plotting heatmap between all variable to understand the correlation
+plt.figure(figsize=(20,10))
+sns.heatmap(stud_df.corr(), annot=True)
+
+# Scatter plot example for highly corelated variables
+plt.scatter(stud_df.G1, stud_df.G3)
 ```
 
 
