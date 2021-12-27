@@ -48,6 +48,8 @@ import os # Use operating system dependant functionality
 import glob # Helps find pathnames that matches specific patterns
 import matplotlib.pyplot as plt # Comprehensive library for creating static, animated, and interactive visualizations in Python
 import numpy as np # Library to perform mathematical and logical operations on arrays
+import seaborn as sns # Helps build scatter plot with regression
+from scipy import stats # Helps calculate the intercept, slope of the linear regression line
 ```
 2. Read requisite files and storing to dataframe
 ```
@@ -71,6 +73,13 @@ stud_df = stud_df.convert_dtypes() # To identify and convert each column to the 
 
 stud_df.drop(['reason','nursery'],axis='columns',inplace=True) # Dropping columns that aren't required
 # Inplace will modify the results in the dataframe itself; else you might have to assign the results to the dataframe
+
+# Removing the zero values of requisite columns and storing in another dataset
+temp = stud_df[(stud_df.G3!=0) & (stud_df.G1!=0)]
+
+# Converting to float datatype towards requisite scatter-plot
+temp.G1 = temp.G1.astype(float)
+temp.G3 = temp.G3.astype(float)
 ```
 5. Data analysis
 ```
@@ -100,8 +109,26 @@ plt.show()
 plt.figure(figsize=(20,10))
 sns.heatmap(stud_df.corr(), annot=True)
 
-# Scatter plot example for highly corelated variables
-plt.scatter(stud_df.G1, stud_df.G3)
+# Scatter plot example for highly corelated variables using seaborn - regplot and lmplot
+# Regplot - Performs a simple linear regression model fit and plot
+
+# Get coeffs of linear fit
+slope, intercept, r_value, p_value, std_err = stats.linregress(temp['G1'],temp['G3'])
+plt.figure(figsize=(15,10))
+
+# Use line_kws to set line label for legend
+ax = sns.regplot(x="G1", y="G3", data=temp, color='b',
+ line_kws={'label':"y={0:.2f}x+{1:.2f}".format(slope,intercept)})
+
+# Plot legend
+ax.legend()
+
+plt.show()
+
+# Lmplot - Combines Regplot with facetGrid class helps in visualizing the distribution of one variable as well as the relationship between multiple variables
+# Executing the scatter plot along with linear regression
+sns.set_style('whitegrid')
+reg = sns.lmplot(x='G1', y='G3', data=temp, hue = 'sex', markers =['o', 'v'],height=7, aspect=1.5)
 ```
 
 
