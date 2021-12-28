@@ -130,6 +130,30 @@ plt.show()
 sns.set_style('whitegrid')
 reg = sns.lmplot(x='G1', y='G3', data=temp, hue = 'sex', markers =['o', 'v'],height=7, aspect=1.5)
 ```
+7.Data Manipulation
+```
+# Find rows with null values in a particular column
+null_set = stud_df[stud_df['address'].isnull()] # Can use isna() as well
 
+# Find rows with no null values in a particular column
+full_set = stud_df[stud_df['address'].notna()]
+
+# Extract requisite columns using iloc
+demo_set = stud_df.iloc[:,np.r_[0:3, 6:9, 13:30]]
+
+# Splitting the string
+split_string = stud_df['Mjob'].str.split('e').str[0]
+
+# Column Insertion
+stud_df.insert(loc=4,column='Split-String', value=split_string)
+
+stud_df.drop('Split-String', axis='columns', inplace=True) # Dropping the extra column added for demo
+# Rearranging columns
+column_names = ['Mjob','Fjob','school','Dalc','absences','sex','famsize']
+demo_df = stud_df.reindex(column_names, axis='columns')
+
+# Renaming a column
+demo_df.rename(columns={'Mjob':'Mothers job'}, inplace=True)
+```
 
  
