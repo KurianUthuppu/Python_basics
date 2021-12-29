@@ -84,10 +84,14 @@ temp.G3 = temp.G3.astype(float)
 5. Data analysis
 ```
 # Findout average age of Female and Male students separately
+# Findout average age of Female and Male students separately
 age_mean = np.mean(stud_df['age'])
+age_max = stud_df.age.max()
+age_min = stud_df.age.min()
+print("Mean age:",round(age_mean,2),"\nMax. Age: ",round(age_max,2),"\nMin age: ",round(age_min,2))
 f_age_mean = np.mean(stud_df[stud_df['sex']=='F'].age)
 m_age_mean = np.mean(stud_df[stud_df['sex']=='M'].age)
-print("Mean age:",round(age_mean,2),"\nMean age - Female:",round(f_age_mean,2),"\nMean age - Male:",round(m_age_mean,2))
+print("Mean age - Female:",round(f_age_mean,2),"\nMean age - Male:",round(m_age_mean,2))
 
 # Findout average alcohol consumption score of Female and Male students separately with 75% weightage to weekday consumption and 25% to weekend consumption
 alc_mean = np.mean(stud_df['Dalc']*0.75+stud_df['Walc']*0.25)
@@ -154,6 +158,24 @@ demo_df = stud_df.reindex(column_names, axis='columns')
 
 # Renaming a column
 demo_df.rename(columns={'Mjob':'Mothers job'}, inplace=True)
+
+# Merging 2 columns and inserting to a dataset
+jobs_merged_column = demo_df['Mothers job']+' & '+ demo_df['Fjob']
+demo_df.insert(loc=2, column='Job_merged',value=jobs_merged_column)
+
+# Merging two datasets
+new_df = pd.merge(stud_df,demo_df,on='Fjob',how='left')
+new_df
+
+# Converting string to requisite format
+stud_df['famsize'] = stud_df['famsize'].astype(str).str.zfill(4)
+
+# Using lambda to identify substrings
+stud_df['famsize'] = stud_df['famsize'].astype(str).map(lambda x: x[1:])
+
+
+
+
 ```
 
  
