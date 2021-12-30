@@ -173,9 +173,17 @@ stud_df['famsize'] = stud_df['famsize'].astype(str).str.zfill(4)
 # Using lambda to identify substrings
 stud_df['famsize'] = stud_df['famsize'].astype(str).map(lambda x: x[1:])
 
+# Sorting the rows and inserting serial no.
+stud_df.sort_values(by='age', inplace=True)
+stud_df.insert(loc=0,column='Sl.No.',value=np.arange(1,len(stud_df)+1))
+stud_df.reset_index(inplace=True, drop=True)
+stud_df
 
-
-
+# Writing to a CSV or Excel file in the current folder
+path = os.path.join(os.getcwd(),'stud_Alc_worked.csv')
+stud_df.to_csv(path, index=False)
+path = os.path.join(os.getcwd(),'stud_Alc_worked.xlsx')
+stud_df.to_excel(path, index=False)
 ```
 
  
