@@ -126,7 +126,7 @@ stud_df.drop('Split-String', axis='columns', inplace=True) # Dropping the extra 
 jobs_merged_column = demo_df['Mothers job']+' & '+ demo_df['Fjob']
 demo_df.insert(loc=2, column='Job_merged',value=jobs_merged_column)
 ```
-6.2 Working with strings
+&nbsp;&nbsp;6.2 Working with strings
 ```
 # Splitting the string
 split_string = stud_df['Mjob'].str.split('e').str[0]
