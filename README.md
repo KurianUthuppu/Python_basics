@@ -64,6 +64,7 @@ stud_df = pd.concat((pd.read_csv(file) for file in csv_files), ignore_index=True
 ```
 stud_df.head() # Give visibility on the top 5 rows along with headers
 stud_df.describe() # Executes major statistical analysis
+stud_df.shape # Finding the no. of rows and columns
 ```
 4. Data cleaning
 ```
@@ -84,7 +85,6 @@ temp.G3 = temp.G3.astype(float)
 5. Data analysis
 ```
 # Findout average age of Female and Male students separately
-# Findout average age of Female and Male students separately
 age_mean = np.mean(stud_df['age'])
 age_max = stud_df.age.max()
 age_min = stud_df.age.min()
@@ -99,7 +99,66 @@ f_alc_mean = np.mean(stud_df[stud_df['sex']=='F'].Dalc*0.75+stud_df[stud_df['sex
 m_alc_mean = np.mean(stud_df[stud_df['sex']=='M'].Dalc*0.75+stud_df[stud_df['sex']=='M'].Walc*0.25)
 print("Mean alcohol score:",round(alc_mean,2),"\nMean alcohol score - Female:",round(f_alc_mean,2),"\nMean alcohol score - Male:",round(m_alc_mean,2))
 ```
-6. Visualizaiton
+6. Data Manipulation
+6.1 Working with columns
+```
+# Find rows with null values in a particular column
+null_set = stud_df[stud_df['address'].isnull()] # Can use isna() as well
+
+# Find rows with no null values in a particular column
+full_set = stud_df[stud_df['address'].notna()]
+
+# Extract requisite columns using iloc
+demo_set = stud_df.iloc[:,np.r_[0:3, 6:9, 13:30]]
+
+# Rearranging columns
+column_names = ['Mjob','Fjob','school','Dalc','absences','sex','famsize']
+demo_df = stud_df.reindex(column_names, axis='columns')
+
+# Renaming a column
+demo_df.rename(columns={'Mjob':'Mothers job'}, inplace=True)
+
+# Column Insertion
+stud_df.insert(loc=4,column='Split-String', value=split_string)
+stud_df.drop('Split-String', axis='columns', inplace=True) # Dropping the extra column added for demo
+
+# Merging 2 columns and inserting to a dataset
+jobs_merged_column = demo_df['Mothers job']+' & '+ demo_df['Fjob']
+demo_df.insert(loc=2, column='Job_merged',value=jobs_merged_column)
+```
+6.2 Working with strings
+```
+# Splitting the string
+split_string = stud_df['Mjob'].str.split('e').str[0]
+
+# Converting string to requisite format
+stud_df['famsize'] = stud_df['famsize'].astype(str).str.zfill(4)
+
+# Using lambda to identify substrings
+stud_df['famsize'] = stud_df['famsize'].astype(str).map(lambda x: x[1:])
+```
+6.3 Working with datasets
+More on joins is available here -> https://www.geeksforgeeks.org/different-types-of-joins-in-pandas/
+```
+# Merging two datasets
+#new_df = pd.merge(stud_df,demo_df,on='uid',how='left') # Merging on common column with unique identifier if present
+new_df = pd.merge(stud_df,demo_df,left_index=True,right_index=True)
+# The above can be achieved in left join mode via df1.join(df2)
+new_df
+
+# Append to a dataframe
+append_df = stud_df[stud_df['sex']=='M']
+new_df =stud_df
+new_df = new_df.append(append_df)
+new_df
+
+# Sorting the rows and inserting serial no.
+stud_df.sort_values(by='age', inplace=True)
+stud_df.insert(loc=0,column='Sl.No.',value=np.arange(1,len(stud_df)+1))
+stud_df.reset_index(inplace=True, drop=True)
+stud_df
+```
+7.Visualizaiton
 - Some of the useful tools in this are histogram and heatmap
 - Histogram help to understand the distribution of data while heatmap reveals the correlation between all variables in the dataset
 - Histogram analysis showed the tapering of age in the given dataset beyond 18 years of age and becoming negligible post 20
@@ -134,56 +193,34 @@ plt.show()
 sns.set_style('whitegrid')
 reg = sns.lmplot(x='G1', y='G3', data=temp, hue = 'sex', markers =['o', 'v'],height=7, aspect=1.5)
 ```
-7.Data Manipulation
+8. Saving files to requisite folder
 ```
-# Find rows with null values in a particular column
-null_set = stud_df[stud_df['address'].isnull()] # Can use isna() as well
-
-# Find rows with no null values in a particular column
-full_set = stud_df[stud_df['address'].notna()]
-
-# Extract requisite columns using iloc
-demo_set = stud_df.iloc[:,np.r_[0:3, 6:9, 13:30]]
-
-# Splitting the string
-split_string = stud_df['Mjob'].str.split('e').str[0]
-
-# Column Insertion
-stud_df.insert(loc=4,column='Split-String', value=split_string)
-
-stud_df.drop('Split-String', axis='columns', inplace=True) # Dropping the extra column added for demo
-# Rearranging columns
-column_names = ['Mjob','Fjob','school','Dalc','absences','sex','famsize']
-demo_df = stud_df.reindex(column_names, axis='columns')
-
-# Renaming a column
-demo_df.rename(columns={'Mjob':'Mothers job'}, inplace=True)
-
-# Merging 2 columns and inserting to a dataset
-jobs_merged_column = demo_df['Mothers job']+' & '+ demo_df['Fjob']
-demo_df.insert(loc=2, column='Job_merged',value=jobs_merged_column)
-
-# Merging two datasets
-new_df = pd.merge(stud_df,demo_df,on='Fjob',how='left')
-new_df
-
-# Converting string to requisite format
-stud_df['famsize'] = stud_df['famsize'].astype(str).str.zfill(4)
-
-# Using lambda to identify substrings
-stud_df['famsize'] = stud_df['famsize'].astype(str).map(lambda x: x[1:])
-
-# Sorting the rows and inserting serial no.
-stud_df.sort_values(by='age', inplace=True)
-stud_df.insert(loc=0,column='Sl.No.',value=np.arange(1,len(stud_df)+1))
-stud_df.reset_index(inplace=True, drop=True)
-stud_df
-
 # Writing to a CSV or Excel file in the current folder
 path = os.path.join(os.getcwd(),'stud_Alc_worked.csv')
 stud_df.to_csv(path, index=False)
 path = os.path.join(os.getcwd(),'stud_Alc_worked.xlsx')
 stud_df.to_excel(path, index=False)
-```
 
+# Writing to an Excel file with requisite format
+# Defining functions
+def get_col_widths(dataframe):
+    # First we find the maximum length of the index column   
+    idx_max = max([len(str(s)) for s in dataframe.index.values] + [len(str(dataframe.index.name))])
+    # Then, we concatenate this to the max of the lengths of column name and its values for each column, left to right
+    return [idx_max] + [max([len(str(s)) for s in dataframe[col].values] + [len(col)]) for col in dataframe.columns]
+
+# Saving to an excel file with date of saving
+write_date = dt.today()
+path = os.path.join(os.getcwd()+'.//stud_alc_kaggle''.xlsx')
+with pd.ExcelWriter(path, engine='xlsxwriter') as writer:
+    stud_df.to_excel(writer, index=False, sheet_name='Data', startcol=1, startrow=1)
+    
+    workbook = writer.book
+    worksheet = writer.sheets['Data']
+    
+    for i, width in enumerate(get_col_widths(stud_df)):
+        worksheet.set_column(i, i, width)
+    
+    writer.save()
+```
  
