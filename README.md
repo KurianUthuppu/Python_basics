@@ -126,7 +126,7 @@ stud_df.drop('Split-String', axis='columns', inplace=True) # Dropping the extra 
 jobs_merged_column = demo_df['Mothers job']+' & '+ demo_df['Fjob']
 demo_df.insert(loc=2, column='Job_merged',value=jobs_merged_column)
 ```
-  6.2 Working with strings
+6.2 Working with strings
 ```
 # Splitting the string
 split_string = stud_df['Mjob'].str.split('e').str[0]
@@ -137,7 +137,7 @@ stud_df['famsize'] = stud_df['famsize'].astype(str).str.zfill(4)
 # Using lambda to identify substrings
 stud_df['famsize'] = stud_df['famsize'].astype(str).map(lambda x: x[1:])
 ```
-  6.3 Working with datasets
+6.3 Working with datasets
 More on joins is available here -> https://www.geeksforgeeks.org/different-types-of-joins-in-pandas/
 ```
 # Merging two datasets
