@@ -99,7 +99,7 @@ f_alc_mean = np.mean(stud_df[stud_df['sex']=='F'].Dalc*0.75+stud_df[stud_df['sex
 m_alc_mean = np.mean(stud_df[stud_df['sex']=='M'].Dalc*0.75+stud_df[stud_df['sex']=='M'].Walc*0.25)
 print("Mean alcohol score:",round(alc_mean,2),"\nMean alcohol score - Female:",round(f_alc_mean,2),"\nMean alcohol score - Male:",round(m_alc_mean,2))
 ```
-6. Data Manipulation
+6. Data Manipulation  
 6.1 Working with columns
 ```
 # Find rows with null values in a particular column
